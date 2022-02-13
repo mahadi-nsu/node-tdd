@@ -13,7 +13,39 @@
     "express": "^4.17.2"
   },
   "devDependencies": {
+    "eslint": "^8.9.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-prettier": "^3.1.4",
     "jest": "^27.5.1",
+    "prettier": "^2.5.1",
     "supertest": "^6.2.2"
+  },
+  "eslintConfig": {
+    "parserOptions": {
+      "ecmaVersion": 2018
+    },
+    "extends": [
+      "eslint:recommended",
+      "plugin:prettier/recommended"
+    ],
+    "plugins": [
+      "prettier"
+    ],
+    "env": {
+      "node": true,
+      "es6": true,
+      "jest": true
+    },
+    "rules": {
+      "semi": "warn",
+      "quotes": [
+        "warn",
+        "single"
+      ]
+    }
+  },
+  "prettier" : {
+    "singleQuote": true,
+    "endOfLine": "auto"
   }
 }
