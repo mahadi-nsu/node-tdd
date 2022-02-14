@@ -4,8 +4,9 @@
   "description": "tdd with express",
   "main": "app.js",
   "scripts": {
-    "start": "node app",
-    "test": "jest --watchAll"
+    "start": "nodemon app",
+    "test": "jest --watchAll",
+    "lint": "eslint ."
   },
   "author": "Mahadi Hassan",
   "license": "ISC",
@@ -17,6 +18,7 @@
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-prettier": "^3.1.4",
     "jest": "^27.5.1",
+    "nodemon": "^2.0.15",
     "prettier": "^2.5.1",
     "supertest": "^6.2.2"
   },
@@ -37,15 +39,13 @@
       "jest": true
     },
     "rules": {
-      "semi": "warn",
-      "quotes": [
-        "warn",
-        "single"
-      ]
+      "eqeqeq": "warn",
+      "prettier/prettier": "warn"
     }
   },
-  "prettier" : {
+  "prettier": {
     "singleQuote": true,
-    "endOfLine": "auto"
+    "endOfLine": "auto",
+    "printWidth": 120
   }
 }
