@@ -8,13 +8,15 @@
     "test": "jest --watchAll",
     "lint": "eslint ."
   },
-  "jest" : {
-    "testTimeout" : 120000
+  "jest": {
+    "testTimeout": 120000
   },
   "author": "Mahadi Hassan",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.17.2"
+    "express": "^4.17.2",
+    "sequelize": "^6.16.1",
+    "sqlite3": "^5.0.2"
   },
   "devDependencies": {
     "eslint": "^8.9.0",
