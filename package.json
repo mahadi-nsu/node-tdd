@@ -8,6 +8,9 @@
     "test": "jest --watchAll",
     "lint": "eslint ."
   },
+  "jest" : {
+    "testTimeout" : 120000
+  },
   "author": "Mahadi Hassan",
   "license": "ISC",
   "dependencies": {
@@ -40,7 +43,7 @@
     },
     "rules": {
       "eqeqeq": "warn",
-      "prettier/prettier": "warn"
+      "prettier/prettier": "error"
     }
   },
   "prettier": {
