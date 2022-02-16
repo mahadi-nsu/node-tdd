@@ -4,6 +4,7 @@ const logger = require('../logger/');
 const sequelize = new Sequelize('hoaxify', 'my-db-user', 'db-pass', {
   dialect: 'sqlite',
   storage: './data/data.sqlite3',
+  logging: false,
 });
 
 sequelize

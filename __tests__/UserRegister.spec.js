@@ -41,7 +41,7 @@ describe('User Registration', () => {
       });
   });
 
-  it.skip('should save the user to the database', (done) => {
+  it('should save the user to the database', (done) => {
     request(app)
       .post('/api/1.0/users')
       .send({
@@ -54,8 +54,8 @@ describe('User Registration', () => {
 
         User.findAll().then((userList) => {
           expect(userList.length).toBe(1);
+          done();
         });
-        done();
       });
   });
 
@@ -72,8 +72,8 @@ describe('User Registration', () => {
           // const savedUser = userList[0];
           expect(userList[0].username).toBe('user1');
           expect(userList[0].email).toBe('user1@gmail.com');
+          done();
         });
-        done();
       });
   });
 });

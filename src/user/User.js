@@ -20,6 +20,7 @@ User.init(
     },
   },
   {
+    // database connection and model
     sequelize,
     modelName: 'user',
   }
