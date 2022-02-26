@@ -21,50 +21,32 @@ const postValidUsers = () => {
 };
 
 describe('User Registration', () => {
-  it('should return 200 when signup request is valid', (done) => {
-    postValidUsers().then((response) => {
-      // console.log(response);
-      expect(response.status).toBe(200);
-      done();
-    });
+  it('should return 200 when signup request is valid', async () => {
+    const response = await postValidUsers();
+    expect(response.status).toBe(200);
   });
 
-  it('should return Success Message when signup request is valid', (done) => {
-    postValidUsers().then((response) => {
-      expect(response.body.message).toBe('User Created');
-      done();
-    });
+  it('should return Success Message when signup request is valid', async () => {
+    const response = await postValidUsers();
+    expect(response.body.message).toBe('User Created');
   });
 
-  it('should save the user to the database', (done) => {
-    postValidUsers().then((response) => {
-      logger.warn(response);
-
-      User.findAll().then((userList) => {
-        expect(userList.length).toBe(1);
-        done();
-      });
-    });
+  it('should save the user to the database', async () => {
+    await postValidUsers();
+    const userList = await User.findAll();
+    expect(userList.length).toBe(1);
   });
 
-  it('should save username and email', (done) => {
-    postValidUsers().then(() => {
-      User.findAll().then((userList) => {
-        // const savedUser = userList[0];
-        expect(userList[0].username).toBe('user1');
-        expect(userList[0].email).toBe('user1@gmail.com');
-        done();
-      });
-    });
+  it('should save username and email', async () => {
+    await postValidUsers();
+    const userList = await User.findAll();
+    expect(userList[0].username).toBe('user1');
+    expect(userList[0].email).toBe('user1@gmail.com');
   });
 
-  it('should hash password', (done) => {
-    postValidUsers().then(() => {
-      User.findAll().then((userList) => {
-        console.log('passowrd we get', userList[0].password);
-        expect(userList[0].password).not.toBe('p4ssword');
-        done();
-      });
-    });
+  it('should hash password', async () => {
+    await postValidUsers();
+    const userList = await User.findAll();
+    expect(userList[0].password).not.toBe('p4ssword');
   });
 });
