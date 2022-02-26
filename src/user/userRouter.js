@@ -5,21 +5,19 @@ const User = require('./User');
 
 var router = express.Router();
 
-module.exports = router.post('/api/1.0/users', (req, res) => {
-  bcrypt.hash(req.body.password, 10).then((hash) => {
-    // approach - 1
+module.exports = router.post('/api/1.0/users', async (req, res) => {
+  const hash = await bcrypt.hash(req.body.password, 10);
+  // approach - 1
 
-    // const user = {
-    //   username: req.body.username,
-    //   email: req.body.email,
-    //   password: hash,
-    // };
+  // const user = {
+  //   username: req.body.username,
+  //   email: req.body.email,
+  //   password: hash,
+  // };
 
-    // approach - 2
-    const user = { ...req.body, password: hash };
+  // approach - 2
+  const user = { ...req.body, password: hash };
 
-    User.create(user).then((response) => {
-      return res.send({ message: 'User Created', response: response });
-    });
-  });
+  const response = await User.create(user);
+  return res.send({ message: 'User Created', response: response });
 });
