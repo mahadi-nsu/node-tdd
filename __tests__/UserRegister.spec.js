@@ -3,6 +3,7 @@ const app = require('../src/app');
 const User = require('../src/user/User');
 const sequelize = require('../src/config/database');
 const logger = require('../src/logger');
+
 beforeAll(() => {
   sequelize.sync();
 });
@@ -72,6 +73,23 @@ describe('User Registration', () => {
           // const savedUser = userList[0];
           expect(userList[0].username).toBe('user1');
           expect(userList[0].email).toBe('user1@gmail.com');
+          done();
+        });
+      });
+  });
+
+  it('should hash password', (done) => {
+    request(app)
+      .post('/api/1.0/users')
+      .send({
+        username: 'user1',
+        email: 'user1@gmail.com',
+        password: 'p4ssword',
+      })
+      .then(() => {
+        User.findAll().then((userList) => {
+          console.log('passowrd we get', userList[0].password);
+          expect(userList[0].password).not.toBe('p4ssword');
           done();
         });
       });
