@@ -1,5 +1,5 @@
 const bcrypt = require('bcrypt');
-const User = require('./User');
+const User = require('./user');
 
 const saveUser = async (user) => {
   const hash = await bcrypt.hash(user.password, 10);
