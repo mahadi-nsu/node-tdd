@@ -1,12 +1,14 @@
 const Sequelize = require('sequelize');
 const logger = require('../logger/');
+const config = require('config');
+const dbconfig = config.get('database');
 
-const sequelize = new Sequelize('hoaxify', 'my-db-user', 'db-pass', {
-  dialect: 'sqlite',
-  storage: './data/data.sqlite3',
-  logging: false,
+const sequelize = new Sequelize(dbconfig.database, dbconfig.username, dbconfig.password, {
+  dialect: dbconfig.dialect,
+  storage: dbconfig.storage,
+  logging: dbconfig.logging,
 });
-
+ 
 sequelize
   .authenticate()
   .then(() => {
