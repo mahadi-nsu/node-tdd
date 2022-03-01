@@ -12,41 +12,63 @@ beforeEach(() => {
   return User.destroy({ truncate: true });
 });
 
-const postValidUsers = () => {
-  return request(app).post('/api/1.0/users').send({
-    username: 'user1',
-    email: 'user1@gmail.com',
-    password: 'p4ssword',
-  });
+const validUser = {
+  username: 'user1',
+  email: 'user1@gmail.com',
+  password: 'p4ssword',
+};
+
+const postUser = (user = validUser) => {
+  return request(app).post('/api/1.0/users').send(user);
 };
 
 describe('User Registration', () => {
   it('should return 200 when signup request is valid', async () => {
-    const response = await postValidUsers();
+    const response = await postUser();
     expect(response.status).toBe(200);
   });
 
   it('should return Success Message when signup request is valid', async () => {
-    const response = await postValidUsers();
+    const response = await postUser();
     expect(response.body.message).toBe('User Created');
   });
 
   it('should save the user to the database', async () => {
-    await postValidUsers();
+    await postUser();
     const userList = await User.findAll();
     expect(userList.length).toBe(1);
   });
 
   it('should save username and email', async () => {
-    await postValidUsers();
+    await postUser();
     const userList = await User.findAll();
     expect(userList[0].username).toBe('user1');
     expect(userList[0].email).toBe('user1@gmail.com');
   });
 
   it('should hash password', async () => {
-    await postValidUsers();
+    await postUser();
     const userList = await User.findAll();
     expect(userList[0].password).not.toBe('p4ssword');
+  });
+
+  // validation test cases
+
+  it('Should return 400 bad request when username is null', async () => {
+    const response = await postUser({
+      username: null,
+      email: 'user1@gmail.com',
+      password: 'p4ssword',
+    });
+    expect(response.status).toBe(400);
+  });
+
+  it('Should return empty when username is null', async () => {
+    const response = await postUser({
+      username: null,
+      email: 'user1@gmail.com',
+      password: 'p4ssword',
+    });
+    expect(response.body.error).toBe('Username is required');
   });
 });
