@@ -69,6 +69,15 @@ describe('User Registration', () => {
       email: 'user1@gmail.com',
       password: 'p4ssword',
     });
-    expect(response.body.error).toBe('Username is required');
+    expect(response.body.validationError.username).toBe('Username cannot be null');
+  });
+
+  it('Should return empty when email is null', async () => {
+    const response = await postUser({
+      username: 'user1',
+      email: null,
+      password: 'p4ssword',
+    });
+    expect(response.body.validationError.email).toBe('Email cannot be null');
   });
 });
