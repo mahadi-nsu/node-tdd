@@ -15,11 +15,8 @@ const validateUser = function (req, res, next) {
 
 const validateEmail = function (req, res, next) {
   const user = req.body;
+  console.log('req object', req.validationErrors);
   if (user.email === null) {
-    // req.validationErrors = {
-    //   email: 'Email cannot be null',
-    // };
-
     req.validationErrors = {
       ...req.validationErrors,
       email: 'Email cannot be null',

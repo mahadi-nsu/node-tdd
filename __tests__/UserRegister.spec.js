@@ -81,7 +81,7 @@ describe('User Registration', () => {
     expect(response.body.validationErrors.email).toBe('Email cannot be null');
   });
 
-  it.only('Should return both empty when email and username all are null', async () => {
+  it('Should return both empty when email and username all are null', async () => {
     const response = await postUser({
       username: null,
       email: null,
@@ -90,7 +90,7 @@ describe('User Registration', () => {
 
     const body = response.body;
     console.log('error', body.validationErrors);
-    console.log(Object.keys(body.validationErrors))
-    expect(Object.keys(body.validationErrors)).toEquals(['username', 'email']);
+    console.log(Object.keys(body.validationErrors));
+    expect(Object.keys(body.validationErrors)).toEqual(['username', 'email']);
   });
 });
