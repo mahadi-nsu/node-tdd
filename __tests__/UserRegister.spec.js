@@ -93,4 +93,13 @@ describe('User Registration', () => {
     console.log(Object.keys(body.validationErrors));
     expect(Object.keys(body.validationErrors)).toEqual(['username', 'email']);
   });
+
+  // it('Should return a message of password cant be null when password is null', async () => {
+  //   const response = await postUser({
+  //     username: 'user1',
+  //     email: 'user1@gmail.com',
+  //     password: null,
+  //   });
+  //   expect(response.body.validationErrors.password).toBe('Password cannot be null');
+  // });
 });
