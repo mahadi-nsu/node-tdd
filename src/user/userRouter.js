@@ -4,27 +4,6 @@ const userService = require('./userService');
 var router = express.Router();
 const { check, validationResult } = require('express-validator');
 
-// const validateUser = function (req, res, next) {
-//   const user = req.body;
-//   if (user.username === null) {
-//     req.validationErrors = {
-//       username: 'Username cannot be null',
-//     };
-//   }
-//   next();
-// };
-
-// const validateEmail = function (req, res, next) {
-//   const user = req.body;
-//   console.log('req object', req.validationErrors);
-//   if (user.email === null) {
-//     req.validationErrors = {
-//       ...req.validationErrors,
-//       email: 'Email cannot be null',
-//     };
-//   }
-//   next();
-// };
 
 const validation = [
   check('username').notEmpty().withMessage('Username cannot be null'),
