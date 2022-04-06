@@ -63,24 +63,6 @@ describe('User Registration', () => {
     expect(response.status).toBe(400);
   });
 
-  it('Should return empty when username is null', async () => {
-    const response = await postUser({
-      username: null,
-      email: 'user1@gmail.com',
-      password: 'p4ssword',
-    });
-    expect(response.body.validationErrors.username).toBe('Username cannot be null');
-  });
-
-  it('Should return empty when email is null', async () => {
-    const response = await postUser({
-      username: 'user1',
-      email: null,
-      password: 'p4ssword',
-    });
-    expect(response.body.validationErrors.email).toBe('Email cannot be null');
-  });
-
   it('Should return both empty when email and username all are null', async () => {
     const response = await postUser({
       username: null,
@@ -93,13 +75,47 @@ describe('User Registration', () => {
     console.log(Object.keys(body.validationErrors));
     expect(Object.keys(body.validationErrors)).toEqual(['username', 'email']);
   });
+  // it('Should return empty when username is null', async () => {
+  //   const response = await postUser({
+  //     username: null,
+  //     email: 'user1@gmail.com',
+  //     password: 'p4ssword',
+  //   });
+  //   expect(response.body.validationErrors.username).toBe('Username cannot be null');
+  // });
 
-  it('Should return a message of password cant be null when password is null', async () => {
-    const response = await postUser({
+  // it('Should return empty when email is null', async () => {
+  //   const response = await postUser({
+  //     username: 'user1',
+  //     email: null,
+  //     password: 'p4ssword',
+  //   });
+  //   expect(response.body.validationErrors.email).toBe('Email cannot be null');
+  // });
+
+  // it('Should return a message of password cant be null when password is null', async () => {
+  //   const response = await postUser({
+  //     username: 'user1',
+  //     email: 'user1@gmail.com',
+  //     password: null,
+  //   });
+  //   expect(response.body.validationErrors.password).toBe('Password cannot be null');
+  // });
+
+  it.each([
+    ['username', 'Username cannot be null'],
+    ['email', 'Email cannot be null'],
+    ['password', 'Password cannot be null'],
+  ])('when %s is null %s is received', async (field, expectedMessage) => {
+    const user = {
       username: 'user1',
       email: 'user1@gmail.com',
-      password: null,
-    });
-    expect(response.body.validationErrors.password).toBe('Password cannot be null');
+      password: 'p4ssword',
+    };
+
+    user[field] = null;
+    const response = await postUser(user);
+    const body = response.body;
+    expect(body.validationErrors[field]).toBe(expectedMessage);
   });
 });
