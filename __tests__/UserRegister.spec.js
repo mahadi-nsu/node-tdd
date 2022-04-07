@@ -120,31 +120,41 @@ describe('User Registration', () => {
   // });
 
   it.each`
-    field         | expectedMessage
-    ${'username'} | ${'Username cannot be null'}
-    ${'email'}    | ${'Email cannot be null'}
-    ${'password'} | ${'Password cannot be null'}
-  `('returns $expectedMessage when $field is null', async ({ field, expectedMessage }) => {
+    field         | value              | expectedMessage
+    ${'username'} | ${null}            | ${'Username cannot be null'}
+    ${'username'} | ${'usr'}           | ${'Must have minimum length 4 characters and maximum 32 characters'}
+    ${'username'} | ${'a'.repeat(33)}  | ${'Must have minimum length 4 characters and maximum 32 characters'}
+    ${'email'}    | ${null}            | ${'Email cannot be null'}
+    ${'email'}    | ${'mail.com'}      | ${'Email is not valid'}
+    ${'email'}    | ${'user.mail.com'} | ${'Email is not valid'}
+    ${'email'}    | ${'user@mail'}     | ${'Email is not valid'}
+    ${'password'} | ${null}            | ${'Password cannot be null'}
+    ${'password'} | ${'pss'}           | ${'Password should be atleast 6 characters long'}
+  `('returns $expectedMessage when $field is $value', async ({ field, value, expectedMessage }) => {
     const user = {
       username: 'user1',
       email: 'user1@gmail.com',
       password: 'p4ssword',
     };
 
-    user[field] = null;
+    console.log('test');
+    console.log(value);
+    user[field] = value;
     const response = await postUser(user);
     const body = response.body;
     expect(body.validationErrors[field]).toBe(expectedMessage);
   });
 
-  it('Should return size validation error when username is less than 4 characters', async () => {
-    const response = await postUser({
-      username: 'usr',
-      email: 'user1@gmail.com',
-      password: 'p4ssword',
-    });
+  // it('Should return size validation error when username is less than 4 characters', async () => {
+  //   const response = await postUser({
+  //     username: 'usr',
+  //     email: 'user1@gmail.com',
+  //     password: 'p4ssword',
+  //   });
 
-    const body = response.body;
-    expect(body.validationErrors.username).toBe('Must have minimum length 4 characters and maximum 32 characters');
-  });
+  //   const body = response.body;
+  //   expect(body.validationErrors.username).toBe('Must have minimum length 4 characters and maximum 32 characters');
+  // });
 });
+
+// ${'password'} | ${'alllowercase'}  | ${'Password should atleast 1 lowercase 1 uppercase 1 number'}

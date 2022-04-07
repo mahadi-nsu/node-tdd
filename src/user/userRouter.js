@@ -9,10 +9,18 @@ const validation = [
     .notEmpty()
     .withMessage('Username cannot be null')
     .bail()
-    .isLength({ min: 4 })
+    .isLength({ min: 4, max: 32 })
     .withMessage('Must have minimum length 4 characters and maximum 32 characters'),
-  check('email').notEmpty().withMessage('Email cannot be null'),
-  check('password').notEmpty().withMessage('Password cannot be null'),
+  check('email').notEmpty().withMessage('Email cannot be null').bail().isEmail().withMessage('Email is not valid'),
+  check('password')
+    .notEmpty()
+    .withMessage('Password cannot be null')
+    .bail()
+    .isLength({ min: 6 })
+    .withMessage('Password should be atleast 6 characters long'),
+  // .bail()
+  // .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).*$/)
+  // .withMessage('Password should atleast 1 lowercase 1 uppercase 1 number'),
 ];
 
 function handleValidationErrors(req, res, next) {
