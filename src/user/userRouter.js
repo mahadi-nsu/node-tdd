@@ -4,9 +4,13 @@ const userService = require('./userService');
 var router = express.Router();
 const { check, validationResult } = require('express-validator');
 
-
 const validation = [
-  check('username').notEmpty().withMessage('Username cannot be null'),
+  check('username')
+    .notEmpty()
+    .withMessage('Username cannot be null')
+    .bail()
+    .isLength({ min: 4 })
+    .withMessage('Must have minimum length 4 characters and maximum 32 characters'),
   check('email').notEmpty().withMessage('Email cannot be null'),
   check('password').notEmpty().withMessage('Password cannot be null'),
 ];
