@@ -102,11 +102,29 @@ describe('User Registration', () => {
   //   expect(response.body.validationErrors.password).toBe('Password cannot be null');
   // });
 
-  it.each([
-    ['username', 'Username cannot be null'],
-    ['email', 'Email cannot be null'],
-    ['password', 'Password cannot be null'],
-  ])('when %s is null %s is received', async (field, expectedMessage) => {
+  // it.each([
+  //   ['username', 'Username cannot be null'],
+  //   ['email', 'Email cannot be null'],
+  //   ['password', 'Password cannot be null'],
+  // ])('when %s is null %s is received', async (field, expectedMessage) => {
+  //   const user = {
+  //     username: 'user1',
+  //     email: 'user1@gmail.com',
+  //     password: 'p4ssword',
+  //   };
+
+  //   user[field] = null;
+  //   const response = await postUser(user);
+  //   const body = response.body;
+  //   expect(body.validationErrors[field]).toBe(expectedMessage);
+  // });
+
+  it.each`
+    field         | expectedMessage
+    ${'username'} | ${'Username cannot be null'}
+    ${'email'}    | ${'Email cannot be null'}
+    ${'password'} | ${'Password cannot be null'}
+  `('returns $expectedMessage when $field is null', async ({ field, expectedMessage }) => {
     const user = {
       username: 'user1',
       email: 'user1@gmail.com',
