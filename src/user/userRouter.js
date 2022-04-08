@@ -17,10 +17,10 @@ const validation = [
     .withMessage('Password cannot be null')
     .bail()
     .isLength({ min: 6 })
-    .withMessage('Password should be atleast 6 characters long'),
-  // .bail()
-  // .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).*$/)
-  // .withMessage('Password should atleast 1 lowercase 1 uppercase 1 number'),
+    .withMessage('Password should be atleast 6 characters long')
+    .bail()
+    .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).*$/)
+    .withMessage('Password should atleast 1 lowercase 1 uppercase 1 number'),
 ];
 
 function handleValidationErrors(req, res, next) {

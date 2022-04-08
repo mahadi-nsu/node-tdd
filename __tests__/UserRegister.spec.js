@@ -15,7 +15,7 @@ beforeEach(() => {
 const validUser = {
   username: 'user1',
   email: 'user1@gmail.com',
-  password: 'p4ssword',
+  password: 'P4ssword',
 };
 
 const postUser = (user = validUser) => {
@@ -67,10 +67,12 @@ describe('User Registration', () => {
     const response = await postUser({
       username: null,
       email: null,
-      password: 'p4ssword',
+      password: 'P4ssword',
     });
 
     const body = response.body;
+    console.log('testinggggggggg');
+    console.log(body);
     console.log('error', body.validationErrors);
     console.log(Object.keys(body.validationErrors));
     expect(Object.keys(body.validationErrors)).toEqual(['username', 'email']);
@@ -130,6 +132,7 @@ describe('User Registration', () => {
     ${'email'}    | ${'user@mail'}     | ${'Email is not valid'}
     ${'password'} | ${null}            | ${'Password cannot be null'}
     ${'password'} | ${'pss'}           | ${'Password should be atleast 6 characters long'}
+    ${'password'} | ${'alllowercase'}  | ${'Password should atleast 1 lowercase 1 uppercase 1 number'}
   `('returns $expectedMessage when $field is $value', async ({ field, value, expectedMessage }) => {
     const user = {
       username: 'user1',
@@ -157,4 +160,4 @@ describe('User Registration', () => {
   // });
 });
 
-// ${'password'} | ${'alllowercase'}  | ${'Password should atleast 1 lowercase 1 uppercase 1 number'}
+//  ${'password'} | ${'alllowercase'}  | ${'Password should atleast 1 lowercase 1 uppercase 1 number'}
