@@ -122,17 +122,22 @@ describe('User Registration', () => {
   // });
 
   it.each`
-    field         | value              | expectedMessage
-    ${'username'} | ${null}            | ${'Username cannot be null'}
-    ${'username'} | ${'usr'}           | ${'Must have minimum length 4 characters and maximum 32 characters'}
-    ${'username'} | ${'a'.repeat(33)}  | ${'Must have minimum length 4 characters and maximum 32 characters'}
-    ${'email'}    | ${null}            | ${'Email cannot be null'}
-    ${'email'}    | ${'mail.com'}      | ${'Email is not valid'}
-    ${'email'}    | ${'user.mail.com'} | ${'Email is not valid'}
-    ${'email'}    | ${'user@mail'}     | ${'Email is not valid'}
-    ${'password'} | ${null}            | ${'Password cannot be null'}
-    ${'password'} | ${'pss'}           | ${'Password should be atleast 6 characters long'}
-    ${'password'} | ${'alllowercase'}  | ${'Password should atleast 1 lowercase 1 uppercase 1 number'}
+    field         | value                   | expectedMessage
+    ${'username'} | ${null}                 | ${'Username cannot be null'}
+    ${'username'} | ${'usr'}                | ${'Must have minimum length 4 characters and maximum 32 characters'}
+    ${'username'} | ${'a'.repeat(33)}       | ${'Must have minimum length 4 characters and maximum 32 characters'}
+    ${'email'}    | ${null}                 | ${'Email cannot be null'}
+    ${'email'}    | ${'mail.com'}           | ${'Email is not valid'}
+    ${'email'}    | ${'user.mail.com'}      | ${'Email is not valid'}
+    ${'email'}    | ${'user@mail'}          | ${'Email is not valid'}
+    ${'password'} | ${null}                 | ${'Password cannot be null'}
+    ${'password'} | ${'pss'}                | ${'Password should be atleast 6 characters long'}
+    ${'password'} | ${'alllowercase'}       | ${'Password should atleast 1 lowercase 1 uppercase 1 number'}
+    ${'password'} | ${'ALLUPPERCASE'}       | ${'Password should atleast 1 lowercase 1 uppercase 1 number'}
+    ${'password'} | ${'123456789'}          | ${'Password should atleast 1 lowercase 1 uppercase 1 number'}
+    ${'password'} | ${'ALLowercase'}        | ${'Password should atleast 1 lowercase 1 uppercase 1 number'}
+    ${'password'} | ${'alllowercaseand666'} | ${'Password should atleast 1 lowercase 1 uppercase 1 number'}
+    ${'password'} | ${'ALL6666666'}         | ${'Password should atleast 1 lowercase 1 uppercase 1 number'}
   `('returns $expectedMessage when $field is $value', async ({ field, value, expectedMessage }) => {
     const user = {
       username: 'user1',
