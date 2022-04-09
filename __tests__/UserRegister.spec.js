@@ -145,8 +145,6 @@ describe('User Registration', () => {
       password: 'p4ssword',
     };
 
-    console.log('test');
-    console.log(value);
     user[field] = value;
     const response = await postUser(user);
     const body = response.body;
@@ -168,6 +166,16 @@ describe('User Registration', () => {
     await User.create({ ...validUser });
     const response = await postUser();
     expect(response.body.validationErrors.email).toBe('E-mail in use');
+  });
+
+  it('Should return error for both email and username', async () => {
+    await User.create({ ...validUser });
+    const response = await postUser({
+      username: null,
+      email: validUser.email,
+      password: validUser.password,
+    });
+    expect(Object.keys(response.body.validationErrors)).toEqual(['username', 'email']);
   });
 });
 

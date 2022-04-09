@@ -2,6 +2,7 @@ const express = require('express');
 const req = require('express/lib/request');
 const userService = require('./userService');
 var router = express.Router();
+const User = require('./user');
 const { check, validationResult } = require('express-validator');
 
 const validation = [
@@ -11,7 +12,19 @@ const validation = [
     .bail()
     .isLength({ min: 4, max: 32 })
     .withMessage('Must have minimum length 4 characters and maximum 32 characters'),
-  check('email').notEmpty().withMessage('Email cannot be null').bail().isEmail().withMessage('Email is not valid'),
+  check('email')
+    .notEmpty()
+    .withMessage('Email cannot be null')
+    .bail()
+    .isEmail()
+    .withMessage('Email is not valid')
+    .bail()
+    .custom(async (email) => {
+      const user = await User.findOne({ where: { email: email } });
+      if (user) {
+        throw new Error('E-mail in use');
+      }
+    }),
   check('password')
     .notEmpty()
     .withMessage('Password cannot be null')
@@ -36,10 +49,6 @@ function handleValidationErrors(req, res, next) {
 }
 
 module.exports = router.post('/api/1.0/users', validation, handleValidationErrors, async (req, res) => {
-  try {
-    const response = await userService.saveUser(req.body);
-    return res.send({ message: 'User Created', response: response });
-  } catch (err) {
-    return res.status(400).send({ validationErrors: { email: 'E-mail in use' } });
-  }
+  const response = await userService.saveUser(req.body);
+  return res.send({ message: 'User Created', response: response });
 });
