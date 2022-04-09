@@ -36,6 +36,10 @@ function handleValidationErrors(req, res, next) {
 }
 
 module.exports = router.post('/api/1.0/users', validation, handleValidationErrors, async (req, res) => {
-  const response = await userService.saveUser(req.body);
-  return res.send({ message: 'User Created', response: response });
+  try {
+    const response = await userService.saveUser(req.body);
+    return res.send({ message: 'User Created', response: response });
+  } catch (err) {
+    return res.status(400).send({ validationErrors: { email: 'E-mail in use' } });
+  }
 });

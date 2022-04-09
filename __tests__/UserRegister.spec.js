@@ -163,6 +163,12 @@ describe('User Registration', () => {
   //   const body = response.body;
   //   expect(body.validationErrors.username).toBe('Must have minimum length 4 characters and maximum 32 characters');
   // });
+
+  it('Should return email in use when email is already in use', async () => {
+    await User.create({ ...validUser });
+    const response = await postUser();
+    expect(response.body.validationErrors.email).toBe('E-mail in use');
+  });
 });
 
 //  ${'password'} | ${'alllowercase'}  | ${'Password should atleast 1 lowercase 1 uppercase 1 number'}
