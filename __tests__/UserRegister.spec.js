@@ -130,6 +130,7 @@ describe('User Registration', () => {
   const password_size = 'Password should be atleast 6 characters long';
   const password_pattern = 'Password should atleast 1 lowercase 1 uppercase 1 number';
   const email_inuse = 'E-mail in use';
+  // const user_created = 'User created';
 
   it.each`
     field         | value                   | expectedMessage
@@ -202,6 +203,7 @@ describe('Internationalization', () => {
   const password_size = 'পাসওয়ার্ড কমপক্ষে 6 অক্ষর দীর্ঘ হওয়া উচিত';
   const password_pattern = 'পাসওয়ার্ড কমপক্ষে 1 ছোট হাতের 1 বড় হাতের 1 সংখ্যা হওয়া উচিত';
   const email_inuse = 'ই-মেইল অলরেডি ব্যবহার হচ্ছে';
+  const user_created = 'ইউজার তৈরি সম্পন্ন';
 
   it.each`
     field         | value                   | expectedMessage
@@ -235,7 +237,12 @@ describe('Internationalization', () => {
 
   it('Should return email in use when email is already in use', async () => {
     await User.create({ ...validUser });
-    const response = await postUser({...validUser} , { language: 'bn' });
+    const response = await postUser({ ...validUser }, { language: 'bn' });
     expect(response.body.validationErrors.email).toBe(email_inuse);
+  });
+
+  it('should return Success Message when signup request is valid', async () => {
+    const response = await postUser({ ...validUser }, { language: 'bn' });
+    expect(response.body.message).toBe(user_created);
   });
 });
