@@ -44,7 +44,7 @@ function handleValidationErrors(req, res, next) {
   // console.log(JSON.parse(req.t(errors[0])));
   if (!errorResponse.isEmpty()) {
     const validationErrors = {};
-    errors.map((err) => (validationErrors[err.param] = req.t(err.msg)));
+    errors.map((err) => (validationErrors[err.param] = req.t(err.msg))); //t for translate
     return res.status(400).send({ validationErrors: validationErrors });
   }
 

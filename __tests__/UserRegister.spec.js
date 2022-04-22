@@ -18,8 +18,12 @@ const validUser = {
   password: 'P4ssword',
 };
 
-const postUser = (user = validUser) => {
-  return request(app).post('/api/1.0/users').send(user);
+const postUser = (user = validUser, options = {}) => {
+  const agent = request(app).post('/api/1.0/users');
+  if (options.language) {
+    agent.set('Accept-Language', options.language);
+  }
+  return agent.send(user);
 };
 
 describe('User Registration', () => {
@@ -71,10 +75,7 @@ describe('User Registration', () => {
     });
 
     const body = response.body;
-    console.log('testinggggggggg');
-    console.log(body);
-    console.log('error', body.validationErrors);
-    console.log(Object.keys(body.validationErrors));
+
     expect(Object.keys(body.validationErrors)).toEqual(['username', 'email']);
   });
   // it('Should return empty when username is null', async () => {
@@ -189,9 +190,9 @@ describe('User Registration', () => {
 });
 
 describe('Internationalization', () => {
-  const postUser = (user = validUser) => {
-    return request(app).post('/api/1.0/users').set('Accept-Language', 'bn').send(user);
-  };
+  // const postUser = (user = validUser) => {
+  //   return request(app).post('/api/1.0/users').set('Accept-Language', 'bn').send(user);
+  // };
 
   const username_null = 'ইউজারনেম খালি হতে পারবে না';
   const username_size = 'সর্বনিম্ন দৈর্ঘ্য 4 অক্ষর এবং সর্বোচ্চ 32 অক্ষর থাকতে হবে';
@@ -227,14 +228,14 @@ describe('Internationalization', () => {
     };
 
     user[field] = value;
-    const response = await postUser(user);
+    const response = await postUser(user, { language: 'bn' });
     const body = response.body;
     expect(body.validationErrors[field]).toBe(expectedMessage);
   });
 
   it('Should return email in use when email is already in use', async () => {
     await User.create({ ...validUser });
-    const response = await postUser();
+    const response = await postUser({...validUser} , { language: 'bn' });
     expect(response.body.validationErrors.email).toBe(email_inuse);
   });
 });
