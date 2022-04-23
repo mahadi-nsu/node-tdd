@@ -2,7 +2,8 @@ const bcrypt = require('bcrypt');
 const User = require('./user');
 
 const saveUser = async (user) => {
-  const hash = await bcrypt.hash(user.password, 10);
+  const { username, email, password } = user;
+  const hash = await bcrypt.hash(password, 10);
   // approach - 1
 
   // const user = {
@@ -12,7 +13,8 @@ const saveUser = async (user) => {
   // };
 
   // approach - 2
-  const newUser = { ...user, password: hash };
+
+  const newUser = { username, email, password: hash };
   return await User.create(newUser);
 };
 
