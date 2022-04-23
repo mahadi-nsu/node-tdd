@@ -39,8 +39,6 @@ function handleValidationErrors(req, res, next) {
   const errorResponse = validationResult(req);
   const errors = errorResponse.errors;
 
-  console.log(errors);
-
   // console.log(JSON.parse(req.t(errors[0])));
   if (!errorResponse.isEmpty()) {
     const validationErrors = {};
