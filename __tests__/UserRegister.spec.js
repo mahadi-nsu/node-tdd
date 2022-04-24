@@ -49,6 +49,11 @@ describe('User Registration', () => {
     expect(response.body.response.inactive).toBe(true);
   });
 
+  it.only('Creates an activation token for user', async () => {
+    const response = await postUser();
+    expect(response.body.response.activationToken).toBeTruthy();
+  });
+
   it('should save the user to the database', async () => {
     await postUser();
     const userList = await User.findAll();
