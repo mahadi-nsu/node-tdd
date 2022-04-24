@@ -37,13 +37,13 @@ describe('User Registration', () => {
     expect(response.body.message).toBe('User Created');
   });
 
-  it.only('create user in inactive mode', async () => {
+  it('create user in inactive mode', async () => {
     const response = await postUser();
     // console.log('response', response.body);
     expect(response.body.response.inactive).toBe(true);
   });
 
-  it.only('Even if inactive is sent false still we need to set user in inactive mode', async () => {
+  it('Even if inactive is sent false still we need to set user in inactive mode', async () => {
     const newUser = { ...validUser, inactive: false };
     const response = await postUser(newUser);
     expect(response.body.response.inactive).toBe(true);

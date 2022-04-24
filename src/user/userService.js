@@ -1,5 +1,10 @@
 const bcrypt = require('bcrypt');
 const User = require('./user');
+const crypto = require('crypto');
+
+const generateToken = (length) => {
+  return crypto.randomBytes(length).toString('hex').substring(0, length);
+};
 
 const saveUser = async (user) => {
   const { username, email, password } = user;
@@ -14,7 +19,7 @@ const saveUser = async (user) => {
 
   // approach - 2
 
-  const newUser = { username, email, password: hash };
+  const newUser = { username, email, password: hash, activationToken: generateToken(16) };
   return await User.create(newUser);
 };
 
