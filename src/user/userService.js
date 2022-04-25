@@ -1,8 +1,7 @@
 const bcrypt = require('bcrypt');
 const User = require('./user');
 const crypto = require('crypto');
-const nodemailerStub = require('nodemailer-stub');
-const nodemailer = require('nodemailer');
+const EmailService = require('../email/EmailService');
 
 const generateToken = (length) => {
   return crypto.randomBytes(length).toString('hex').substring(0, length);
@@ -23,15 +22,7 @@ const saveUser = async (user) => {
 
   const newUser = { username, email, password: hash, activationToken: generateToken(16) };
   const userCreateresponse = await User.create(newUser);
-
-  const transporter = nodemailer.createTransport(nodemailerStub.stubTransport);
-  await transporter.sendMail({
-    from: 'My App <info@my-app.com>',
-    to: email,
-    subject: 'Account Activation',
-    html: `Token is ${newUser.activationToken}`,
-  });
-
+  await EmailService.sendAccountActivation(email, newUser.activationToken);
   return userCreateresponse;
 };
 
