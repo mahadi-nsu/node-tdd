@@ -3,6 +3,7 @@ const app = require('../src/app');
 const User = require('../src/user/user');
 const sequelize = require('../src/config/database');
 const logger = require('../src/logger');
+const nodemailerStub = require('nodemailer-stub');
 
 beforeAll(() => {
   sequelize.sync();
@@ -49,9 +50,18 @@ describe('User Registration', () => {
     expect(response.body.response.inactive).toBe(true);
   });
 
-  it.only('Creates an activation token for user', async () => {
+  it('Creates an activation token for user', async () => {
     const response = await postUser();
     expect(response.body.response.activationToken).toBeTruthy();
+  });
+
+  it('sends an account activation email with activationcode', async () => {
+    const response = await postUser();
+    const lastmail = nodemailerStub.interactsWithMail.lastMail();
+    console.log('Mahadi');
+    console.log(lastmail);
+    expect(lastmail.to[0]).toBe('user1@gmail.com');
+    expect(lastmail.content).toContain(response.body.response.activationToken);
   });
 
   it('should save the user to the database', async () => {
