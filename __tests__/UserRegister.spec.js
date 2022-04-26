@@ -4,6 +4,7 @@ const User = require('../src/user/user');
 const sequelize = require('../src/config/database');
 const logger = require('../src/logger');
 const nodemailerStub = require('nodemailer-stub');
+const EmailService = require('../src/email/EmailService');
 
 beforeAll(() => {
   sequelize.sync();
@@ -62,6 +63,16 @@ describe('User Registration', () => {
     console.log(lastmail);
     expect(lastmail.to[0]).toBe('user1@gmail.com');
     expect(lastmail.content).toContain(response.body.response.activationToken);
+  });
+
+  it('return 502 bad gateway when sending email fails', async () => {
+    const mockSendAccountActivation = jest.spyOn(EmailService, 'sendAccountActivation').mockRejectedValue({
+      message: 'Failed to deliver email',
+    });
+    const response = await postUser();
+    expect(response.status).toBe(502);
+    // have to close the mock
+    mockSendAccountActivation.mockRestore();
   });
 
   it('should save the user to the database', async () => {
