@@ -54,6 +54,6 @@ module.exports = router.post('/api/1.0/users', validation, handleValidationError
     const response = await userService.saveUser(req.body);
     return res.send({ message: req.t('user_created'), response: response });
   } catch (error) {
-    return res.status(502).send();
+    return res.status(502).send({message : 'E-mail failure'});
   }
 });

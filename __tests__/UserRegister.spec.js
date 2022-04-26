@@ -75,6 +75,31 @@ describe('User Registration', () => {
     mockSendAccountActivation.mockRestore();
   });
 
+  it('return error message when sending email fails', async () => {
+    const mockSendAccountActivation = jest.spyOn(EmailService, 'sendAccountActivation').mockRejectedValue({
+      message: 'Failed to deliver email',
+    });
+    const response = await postUser();
+    mockSendAccountActivation.mockRestore();
+    expect(response.body.message).toBe('E-mail failure');
+    // have to close the mock
+    // mockSendAccountActivation.mockRestore();
+  });
+
+  it('doesnt save user to database if activat mail fails', async () => {
+    const mockSendAccountActivation = jest.spyOn(EmailService, 'sendAccountActivation').mockRejectedValue({
+      message: 'Failed to deliver email',
+    });
+    const response = await postUser();
+    expect(response.body.message).toBe('E-mail failure');
+
+    mockSendAccountActivation.mockRestore();
+    const users = await User.findAll();
+    expect(users.length).toBe(0);
+    // have to close the mock
+    // mockSendAccountActivation.mockRestore();
+  });
+
   it('should save the user to the database', async () => {
     await postUser();
     const userList = await User.findAll();
